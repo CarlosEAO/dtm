@@ -407,8 +407,29 @@ function transaction13(){
     print_r($estudiantes);
 }
 
+
+function transaction14($psicologo_id){
+    $conS2 = Connection::createConnectionS2();
+
+    $buscarPasswd = $conS2->prepare("SELECT passwd FROM psicologo WHERE id = ?");
+    $buscarPasswd->execute(array($psicologo_id));
+    $passwd = $buscarPasswd->fetch()[0];
+
+    return $passwd;
+
+}
+
+function transaction15($estudiante_id){
+    $conS2 = Connection::createConnectionS2();
+
+    $buscarPasswd = $conS2->prepare("SELECT passwd FROM estudiante WHERE id = ?");
+    $buscarPasswd->execute(array($estudiante_id));
+    $passwd = $buscarPasswd->fetch()[0];
+    return $passwd;
+
+}
 //transaction1("Carlos alumno", "Aranda", "Ochoa",8,"123",1, date('Y/m/d'),0,1,221560,"CED12345");
 //transaction3("CED12348","Monica Psicologa", "Barrios", "Zavala", "monica@psicologos.com", "3968116", "11:30 AM", "3:00 PM", "contra123", 2, "una calle en el barrio de la estacion", 111, "Barrio de la estacion", 20000);
 //transaction2();
 
-transaction7();
+transaction15("221560");
