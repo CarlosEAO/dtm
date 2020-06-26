@@ -328,6 +328,35 @@ function transaction7($datosDomicilio, $datosPaciente, $datosEmpleos, $datosAnte
     }
 }
 
+function transaction8($paciente_id){
+    $conS1 = Connection::createConnectionS1();
+
+    $obtenerHistorial = $conS1->prepare("SELECT historial.*, enfoque.nombre as 'enfoqueN' FROM historial, enfoque WHERE paciente_id=? AND enfoque_id = enfoque.id;");
+
+    $obtenerHistorial->execute(array($paciente_id));
+
+    $resultado =  $obtenerHistorial->fetch();
+    $conS1 = null;
+    return $resultado;
+}
+
+function transaction9($datosConsulta){
+    $conS3 = Connection::createConnectionS3();
+
+    try{
+        $conS3->beginTransaction();
+
+        $insertarConsulta = $conS4->prepare("INSERT INTO consulta (hora, fecha, notas, estudiante_id, paciente_id) VALUES (?,?,?,?,?);");
+        $insertarConsulta->execute($datosConsulta);
+        $conS3->commit();
+    }catch(Exception $e){
+        echo $e->getMessage();
+        $conS3->rollBack();
+    }
+    
+
+}
+
 function transaction10(){
     $conS3 = Connection::createConnectionS3();
     
@@ -376,8 +405,14 @@ function transaction11($nombreEnfoque){
     $conS3 = null;
 }
 
-function transaction12(){
-    //tablas enfoque y 
+function transaction12($enfoque_id){
+    //tabla historial y 
+    $conS1 = Connection::createConnections1();
+
+    $buscarHistorial = $conS1->prepare("SELECT nombre, primerApellido, necesidadEspecial FROM paciente, historial WHERE activo = 0 AND enfoque_id = ?;");
+    $buscarHistorial->execute(array($enfoque_id));
+
+    $resultado = $buscarHistorial->fetch();
 
 }
 
