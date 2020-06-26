@@ -322,6 +322,7 @@ function transaction7($datosDomicilio, $datosPaciente, $datosEmpleos, $datosAnte
         $conS3->commit();
 
     }catch(Exception $e){
+        echo $e->getMessage();
         $conS1->rollBack();
         $conS2->rollBack();
         $conS3->rollBack();
